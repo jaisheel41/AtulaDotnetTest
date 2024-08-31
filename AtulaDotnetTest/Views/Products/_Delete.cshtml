@@ -29,21 +29,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
  <script>
-    // $(document).ready(function () {
-    //     $("#deleteProductBtn").click(function (event) {
-    //         event.preventDefault();
-    //         $.post('/Products/DeleteConfirmed', $("#deleteProductForm").serialize(), function (response) {
-    //             if (response.success) {
-    //                 toastr.success(response.message);
-    //                 $("#deleteProductModal").modal('hide');
-    //                 table.ajax.reload(null, false);
-    //             } else {
-    //                 toastr.error(response.message);
-    //             }
-    //         });
-    //     });
-    // });
-
     $("#deleteProductBtn").click(function () {
         $.post('/Products/DeleteConfirmed', $("#deleteProductForm").serialize(), function (response) {
             if (response.success) {

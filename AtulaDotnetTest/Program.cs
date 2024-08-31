@@ -51,14 +51,13 @@ app.MapControllerRoute(
 
 app.Run();
 
-// Method to seed a test user
+// Seeding a test user
 async Task SeedTestUser(IServiceProvider serviceProvider)
 {
     using var scope = serviceProvider.CreateScope();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    // Check if the Admin role exists, and create it if not
     if (!await roleManager.RoleExistsAsync("Admin"))
     {
         await roleManager.CreateAsync(new IdentityRole("Admin"));

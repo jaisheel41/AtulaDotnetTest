@@ -6,7 +6,6 @@
 
 <h2>Products</h2>
 
-<!-- Container for the button, aligned to the right -->
 <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary" id="createProductBtn">Create New Product</button>
 </div>
@@ -21,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        <!-- DataTables will populate this -->
+        
     </tbody>
 </table>
 
@@ -29,24 +28,16 @@
 <div id="modalContainer"></div>
 
 @section Scripts {
-    <!-- Include jQuery -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Include DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-
-    <!-- Include DataTables JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
-    <!-- Include Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-
-    <!-- Include Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         $(document).ready(function () {
-            // Initialize DataTables with Ajax source
+            // Initializing DataTables with Ajax
             $('#productsTable').DataTable({
                 "ajax": {
                     "url": "/Products/GetProducts",
@@ -75,7 +66,6 @@
                 });
             });
 
-            // Delegate events for dynamically loaded elements
             $('#productsTable').on('click', '.editProductBtn', function () {
                 var id = $(this).data("id");
                 $.get('/Products/Edit/' + id, function (data) {
