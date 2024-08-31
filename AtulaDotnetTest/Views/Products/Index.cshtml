@@ -1,0 +1,96 @@
+﻿@model IEnumerable<AtulaDotnetTest.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Products</h2>
+
+<!-- Container for the button, aligned to the right -->
+<div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary" id="createProductBtn">Create New Product</button>
+</div>
+
+<!-- Table listing all products -->
+<table id="productsTable" class="table mt-3">
+    <thead>
+        <tr>
+            <th>Sl</th>
+            <th>Product Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- DataTables will populate this -->
+    </tbody>
+</table>
+
+<!-- Modal container -->
+<div id="modalContainer"></div>
+
+@section Scripts {
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <!-- Include DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+    <!-- Include Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <!-- Include Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTables with Ajax source
+            $('#productsTable').DataTable({
+                "ajax": {
+                    "url": "/Products/GetProducts",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    {
+                        "data": "id",
+                        "render": function (data, type, row) {
+                            return `
+                                                <button class="btn btn-success editProductBtn" data-id="${data}">Edit</button>
+                                                <button class="btn btn-danger deleteProductBtn" data-id="${data}">Delete</button>`;
+                        }
+                    }
+                ]
+            });
+
+            // Load Create modal
+            $("#createProductBtn").click(function () {
+                $.get('/Products/Create', function (data) {
+                    $("#modalContainer").html(data);
+                    $("#modalContainer").find(".modal").modal('show');
+                });
+            });
+
+            // Delegate events for dynamically loaded elements
+            $('#productsTable').on('click', '.editProductBtn', function () {
+                var id = $(this).data("id");
+                $.get('/Products/Edit/' + id, function (data) {
+                    $("#modalContainer").html(data);
+                    $("#modalContainer").find(".modal").modal('show');
+                });
+            });
+
+            $('#productsTable').on('click', '.deleteProductBtn', function () {
+                var id = $(this).data("id");
+                $.get('/Products/Delete/' + id, function (data) {
+                    $("#modalContainer").html(data);
+                    $("#modalContainer").find(".modal").modal('show');
+                });
+            });
+        });
+    </script>
+}

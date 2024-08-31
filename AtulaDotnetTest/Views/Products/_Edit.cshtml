@@ -1,0 +1,88 @@
+﻿@model AtulaDotnetTest.Models.ProductDTO
+<style>
+    .select2-container {
+        z-index: 2050;
+        position: relative; 
+    }
+
+    .select2-dropdown {
+        z-index: 2051; 
+    }
+
+</style>
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+                    <div class="form-group">
+                        <label for="Sku">SKU</label>
+                        @Html.TextBoxFor(m => m.Sku, new { @class = "form-control", @id = "Sku" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @id = "Name" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CategoryIds">Categories</label>
+                        @Html.ListBoxFor(m => m.CategoryIds, new MultiSelectList(ViewBag.Categories, "Id", "Name", Model.CategoryIds), new { @class = "form-control", @id = "CategoryIds" })
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="updateProductBtn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Load Bootstrap JS (required for modals) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Load Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<!-- Load Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#CategoryIds').select2({
+            placeholder: "Select Categories",
+            allowClear: true,
+            dropdownParent: $('#editProductModal'), 
+            width: '100%'  
+        });
+
+        $("#updateProductBtn").click(function () {
+            $.post('/Products/Edit', $("#editProductForm").serialize(), function (response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    toastr.error(response.message);
+                }
+                $("#editProductModal").modal('hide');
+            });
+        });
+    });
+</script>
+
+
+

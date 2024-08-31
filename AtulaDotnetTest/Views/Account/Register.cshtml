@@ -1,0 +1,115 @@
+﻿@model AtulaDotnetTest.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null; // This ensures that the layout is not applied, allowing for a clean, centered registration page
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @ViewData["ApplicationName"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .register-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+            .register-container h2 {
+                margin-bottom: 1rem;
+            }
+
+        .btn-primary {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2 class="text-center">Register</h2>
+
+        <form id="registerForm" method="post">
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="@Url.Action("Login", "Account")">Already have an account? Sign in</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#registerForm").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("Register", "Account")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("Index", "Products")';
+                            }, 1500);
+                        } else {
+                            response.errors.forEach(function (error) {
+                                toastr.error(error);
+                            });
+                        }
+                    },
+                    error: function () {
+                        toastr.error("An error occurred during registration.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
