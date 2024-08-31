@@ -72,17 +72,15 @@ Password: Admin@123
 Role: Admin
 
 ### To Test the Application
-Login:
+**Login**:
 
 Use the seeded admin credentials: admin@example.com / Admin@123.
 
-Manage Products:
+**Manage Products**:
 Create, edit, and delete products.
-Manage Categories:
 
+**Manage Categories**:
 Assign categories to products.
-Register New Users:
 
+**Register New Users**:
 Use the "Register" link on the login page to create new users.
-
-
