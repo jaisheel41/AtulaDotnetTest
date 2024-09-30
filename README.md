@@ -1,4 +1,4 @@
-# AtulaDotnetTest
+# Inventory Manager
 
 ## Features
 
@@ -32,7 +32,7 @@
 
 1. **Clone the Repository**:
    ```sh
-   git clone https://github.com/jaisheel41/AtulaDotnetTest.git
+   git clone https://github.com/jaisheel41/Inventory-Manager.git
    cd AtulaDotnetTest
 
 2. **Setup Database**:
